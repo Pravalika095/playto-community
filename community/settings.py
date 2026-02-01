@@ -1,3 +1,4 @@
+
 """
 Django settings for community project.
 """
@@ -9,7 +10,10 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+# ========================
 # SECURITY
+# ========================
+
 SECRET_KEY = os.environ.get(
     "SECRET_KEY",
     "django-insecure-fallback-key"
@@ -20,7 +24,9 @@ DEBUG = os.environ.get("DEBUG", "False") == "True"
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
 
 
-# Application definition
+# ========================
+# APPLICATIONS
+# ========================
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -34,9 +40,14 @@ INSTALLED_APPS = [
     'feed',
 ]
 
+
+# ========================
+# MIDDLEWARE
+# ========================
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',   # 👈 must be right after SecurityMiddleware
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # must be right after SecurityMiddleware
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -47,6 +58,11 @@ MIDDLEWARE = [
 
 
 ROOT_URLCONF = 'community.urls'
+
+
+# ========================
+# TEMPLATES
+# ========================
 
 TEMPLATES = [
     {
@@ -63,10 +79,14 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'community.wsgi.application'
 
 
+# ========================
 # DATABASE
+# ========================
+
 DATABASES = {
     "default": dj_database_url.config(
         default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
@@ -75,7 +95,21 @@ DATABASES = {
 }
 
 
-# Password validation
+# ========================
+# DRF CONFIGURATION (JSON ONLY)
+# ========================
+
+REST_FRAMEWORK = {
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+    ],
+}
+
+
+# ========================
+# PASSWORD VALIDATION
+# ========================
+
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -84,19 +118,28 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
+# ========================
+# INTERNATIONALIZATION
+# ========================
+
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
 
-# Static files
+# ========================
+# STATIC FILES
+# ========================
+
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
+# ========================
+# DEFAULT PK FIELD
+# ========================
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
